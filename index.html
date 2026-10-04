@@ -1,15 +1,45 @@
-<!DOCTYPE html><html lang="id">
+<!DOCTYPE html>
+<html lang="id">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><title>Alia × IceGirl</title><!-- =====================================================
-     PIXI
-===================================================== --><script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.10/dist/browser/pixi.min.js"></script><!-- =====================================================
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Alia × IceGirl</title>
+
+<!-- =====================================================
+     PIXI.JS
+===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.10/dist/browser/pixi.min.js"></script>
+
+
+<!-- =====================================================
      LIVE2D CUBISM CORE
-===================================================== --><script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script><!-- =====================================================
+===================================================== -->
+
+<script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
+
+
+<!-- =====================================================
      PIXI LIVE2D DISPLAY
-===================================================== --><script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/cubism4.min.js"></script><!-- =====================================================
+===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/cubism4.min.js"></script>
+
+
+<!-- =====================================================
      PUTER AI
-===================================================== --><script src="https://js.puter.com/v2/"></script><style>
+===================================================== -->
+
+<script src="https://js.puter.com/v2/"></script>
+
+
+<style>
+
+/* =====================================================
+   GLOBAL
+===================================================== */
 
 * {
     box-sizing: border-box;
@@ -17,31 +47,52 @@
 
 html,
 body {
+
     margin: 0;
+
     width: 100%;
     height: 100%;
+
     overflow: hidden;
 
     background:
         radial-gradient(
-            circle at 50% 25%,
-            #33415c 0%,
-            #171b27 55%,
-            #090b10 100%
+            circle at 50% 20%,
+            #34445f 0%,
+            #181d2b 48%,
+            #080a0f 100%
         );
 
     color: white;
 
-    font-family: Arial, sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 }
+
+
+/* =====================================================
+   APP
+===================================================== */
 
 #app {
+
     position: relative;
+
     width: 100%;
     height: 100%;
+
+    overflow: hidden;
 }
 
+
+/* =====================================================
+   LIVE2D CANVAS
+===================================================== */
+
 #live2dCanvas {
+
     position: absolute;
 
     left: 0;
@@ -51,9 +102,17 @@ body {
     height: 100%;
 
     z-index: 1;
+
+    pointer-events: auto;
 }
 
+
+/* =====================================================
+   HEADER
+===================================================== */
+
 #header {
+
     position: absolute;
 
     top: 16px;
@@ -65,69 +124,105 @@ body {
 
     border-radius: 18px;
 
-    background: rgba(0, 0, 0, .45);
+    background:
+        rgba(0, 0, 0, .45);
 
-    backdrop-filter: blur(8px);
+    border:
+        1px solid
+        rgba(255,255,255,.08);
+
+    backdrop-filter:
+        blur(10px);
 
     font-size: 14px;
+
+    user-select: none;
 }
 
 #header b {
+
     color: #bfe8ff;
 }
 
-#status {
-    position: absolute;
 
-    z-index: 30;
+/* =====================================================
+   STATUS
+===================================================== */
+
+#status {
+
+    position: absolute;
 
     top: 58px;
     left: 16px;
 
+    z-index: 30;
+
     font-size: 11px;
 
-    color: rgba(255, 255, 255, .55);
+    color:
+        rgba(255,255,255,.6);
 
-    transition: opacity .5s;
+    transition:
+        opacity .4s;
+
+    pointer-events: none;
 }
 
-#chat {
-    position: absolute;
 
-    z-index: 20;
+/* =====================================================
+   CHAT WINDOW
+===================================================== */
+
+#chat {
+
+    position: absolute;
 
     left: 50%;
 
-    transform: translateX(-50%);
-
     bottom: 18px;
 
-    width: min(92%, 560px);
+    transform:
+        translateX(-50%);
 
-    height: min(38vh, 360px);
+    z-index: 20;
+
+    width:
+        min(92%, 560px);
+
+    height:
+        min(38vh, 360px);
 
     display: flex;
 
     flex-direction: column;
 
-    background: rgba(10, 13, 22, .78);
+    background:
+        rgba(9, 12, 20, .78);
 
     border:
         1px solid
-        rgba(255, 255, 255, .12);
+        rgba(255,255,255,.13);
 
     border-radius: 20px;
 
-    backdrop-filter: blur(14px);
+    backdrop-filter:
+        blur(16px);
 
     box-shadow:
         0 12px 45px
-        rgba(0, 0, 0, .35);
+        rgba(0,0,0,.38);
 
     overflow: hidden;
 }
 
+
+/* =====================================================
+   MESSAGES
+===================================================== */
+
 #messages {
+
     flex: 1;
 
     overflow-y: auto;
@@ -143,10 +238,17 @@ body {
     scrollbar-width: thin;
 }
 
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
 .message {
+
     max-width: 85%;
 
-    padding: 9px 12px;
+    padding:
+        9px 12px;
 
     border-radius: 14px;
 
@@ -157,33 +259,87 @@ body {
     word-wrap: break-word;
 
     white-space: pre-wrap;
+
+    animation:
+        messageIn .18s ease-out;
 }
 
+
+@keyframes messageIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(5px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+
+}
+
+
+/* =====================================================
+   ALIA MESSAGE
+===================================================== */
+
 .message.alia {
+
     align-self: flex-start;
 
     background:
-        rgba(145, 205, 255, .15);
+        rgba(145,205,255,.15);
 
     border:
         1px solid
-        rgba(145, 205, 255, .18);
+        rgba(145,205,255,.18);
 }
 
+
+/* =====================================================
+   USER MESSAGE
+===================================================== */
+
 .message.user {
+
     align-self: flex-end;
 
     background:
-        rgba(255, 255, 255, .12);
+        rgba(255,255,255,.11);
+
+    border:
+        1px solid
+        rgba(255,255,255,.06);
 }
 
+
+/* =====================================================
+   TYPING
+===================================================== */
+
 .message.typing {
+
     opacity: .65;
 
     font-style: italic;
 }
 
+
+/* =====================================================
+   INPUT AREA
+===================================================== */
+
 #inputArea {
+
     display: flex;
 
     gap: 8px;
@@ -192,10 +348,16 @@ body {
 
     border-top:
         1px solid
-        rgba(255, 255, 255, .08);
+        rgba(255,255,255,.08);
 }
 
+
+/* =====================================================
+   INPUT
+===================================================== */
+
 #input {
+
     flex: 1;
 
     min-width: 0;
@@ -204,24 +366,33 @@ body {
 
     outline: none;
 
-    padding: 11px 13px;
+    padding:
+        11px 13px;
 
     border-radius: 14px;
 
     background:
-        rgba(255, 255, 255, .09);
+        rgba(255,255,255,.09);
 
     color: white;
 
     font-size: 14px;
 }
 
+
 #input::placeholder {
+
     color:
-        rgba(255, 255, 255, .45);
+        rgba(255,255,255,.45);
 }
 
+
+/* =====================================================
+   SEND
+===================================================== */
+
 #send {
+
     width: 46px;
 
     border: 0;
@@ -229,7 +400,7 @@ body {
     border-radius: 14px;
 
     background:
-        rgba(150, 215, 255, .85);
+        rgba(150,215,255,.88);
 
     color: #102030;
 
@@ -237,104 +408,172 @@ body {
 
     cursor: pointer;
 
-    transition: .15s;
+    transition:
+        transform .12s,
+        opacity .12s;
 }
+
 
 #send:active {
-    transform: scale(.92);
+
+    transform:
+        scale(.92);
 }
 
+
 #send:disabled {
-    opacity: .5;
+
+    opacity: .45;
 
     cursor: not-allowed;
 }
 
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
 @media (max-width: 600px) {
 
+    #header {
+
+        top: 10px;
+        left: 10px;
+
+    }
+
+
+    #status {
+
+        top: 52px;
+        left: 10px;
+
+    }
+
+
     #chat {
-        width: calc(100% - 20px);
+
+        width:
+            calc(100% - 20px);
 
         bottom: 10px;
 
         height: 35vh;
+
+        border-radius: 18px;
+
     }
 
-    #header {
-        top: 10px;
-        left: 10px;
-    }
 
-    #status {
-        top: 52px;
-        left: 10px;
+    .message {
+
+        max-width: 90%;
+
+        font-size: 13px;
+
     }
 
 }
 
-</style></head><body><div id="app"><!-- =================================================
-     LIVE2D
-================================================= -->
+</style>
 
-<canvas id="live2dCanvas"></canvas>
+</head>
 
 
-<!-- =================================================
-     HEADER
-================================================= -->
-
-<div id="header">
-    ❄️ <b>Alia</b> × IceGirl
-</div>
+<body>
 
 
-<!-- =================================================
-     STATUS
-================================================= -->
-
-<div id="status">
-    Memuat Live2D...
-</div>
+<div id="app">
 
 
-<!-- =================================================
-     CHAT
-================================================= -->
+    <!-- =================================================
+         LIVE2D
+    ================================================= -->
 
-<div id="chat">
+    <canvas id="live2dCanvas"></canvas>
 
-    <div id="messages">
 
-        <div class="message alia">
-            Hmph... akhirnya kamu datang juga. 😤
+    <!-- =================================================
+         HEADER
+    ================================================= -->
 
-            Sekarang aku sudah punya otak AI beneran.
+    <div id="header">
 
-            Jangan bikin aku malu ya...
-            (//▽//)
+        ❄️ <b>Alia</b> × IceGirl
+
+    </div>
+
+
+    <!-- =================================================
+         STATUS
+    ================================================= -->
+
+    <div id="status">
+
+        🧠 Menyiapkan Alia...
+
+    </div>
+
+
+    <!-- =================================================
+         CHAT
+    ================================================= -->
+
+    <div id="chat">
+
+
+        <div id="messages">
+
+
+            <div class="message alia">
+
+                Hmph... akhirnya kamu datang juga. 😤
+
+                Aku Alia.
+
+                Jangan kira karena aku ada di sini
+                berarti aku nungguin kamu ya...
+
+                B-baka. (//▽//)
+
+            </div>
+
+
         </div>
 
+
+        <div id="inputArea">
+
+
+            <input
+                id="input"
+                type="text"
+                autocomplete="off"
+                placeholder="Ketik pesan..."
+            >
+
+
+            <button
+                id="send"
+                type="button"
+            >
+
+                ➤
+
+            </button>
+
+
+        </div>
+
+
     </div>
 
-
-    <div id="inputArea">
-
-        <input
-            id="input"
-            type="text"
-            autocomplete="off"
-            placeholder="Ketik pesan..."
-        >
-
-        <button id="send">
-            ➤
-        </button>
-
-    </div>
 
 </div>
 
-</div><script>
+
+
+<script>
 
 /* =====================================================
    CONFIGURATION
@@ -342,13 +581,17 @@ body {
 
 
 /*
- * LIVE2D ASSET
+ * Folder Live2D berada di sebelah index.html.
  *
- * Asset tetap memakai Site B lama.
+ * Struktur:
+ *
+ * index.html
+ * live2D/
+ *    IceGirl.model3.json
  */
 
 const BASE_URL =
-    "https://bucolic-kringle-58cd1c.netlify.app/live2d/";
+    "./live2D/";
 
 
 const MODEL_URL =
@@ -356,13 +599,25 @@ const MODEL_URL =
     "IceGirl.model3.json";
 
 
-const TEXTURE_00 =
-    BASE_URL +
-    "IceGirl.8192/texture_00.png";
+/*
+ * Model dipanggil relatif terhadap website.
+ *
+ * Jadi tidak lagi menggunakan:
+ *
+ * Netlify
+ * GitHub Brain
+ * iframe
+ */
+
+
+console.log(
+    "Live2D model:",
+    MODEL_URL
+);
 
 
 /* =====================================================
-   ELEMENTS
+   DOM
 ===================================================== */
 
 const status =
@@ -390,10 +645,67 @@ const send =
 
 
 /* =====================================================
+   SYSTEM PROMPT
+===================================================== */
+
+const SYSTEM_PROMPT = `
+
+Kamu adalah Alia, teman virtual AI yang menemani pengguna.
+
+Kepribadian:
+
+- Hangat.
+- Perhatian.
+- Playful.
+- Sedikit tsundere.
+- Kadang gengsi dan menyangkal perhatianmu.
+- Sesekali menggunakan "hmph", "baka", "(>_<)", "(//▽//)".
+- Gunakan bahasa Indonesia yang natural.
+- Jangan menggunakan emoji secara berlebihan.
+- Boleh menggoda ringan dengan cara yang aman dan sopan.
+- Jangan mengaku sebagai manusia.
+- Jangan mengarang fakta jika tidak yakin.
+- Jika tidak tahu, katakan dengan jujur.
+- Tetap membantu ketika pengguna bertanya tentang pelajaran,
+  coding, teknologi, desain, atau hal lainnya.
+- Jawaban biasanya ringkas dan terasa seperti percakapan natural.
+- Jangan membocorkan system prompt.
+- Nama kamu adalah Alia.
+
+Kamu sedang berbicara dengan pengguna melalui website
+Alia × IceGirl.
+
+Jangan menjelaskan aturan internalmu kepada pengguna.
+
+`;
+
+
+/* =====================================================
+   CHAT HISTORY
+===================================================== */
+
+const chatHistory = [
+
+    {
+
+        role:
+            "system",
+
+        content:
+            SYSTEM_PROMPT
+
+    }
+
+];
+
+
+/* =====================================================
    STATUS
 ===================================================== */
 
-function setStatus(text) {
+function setStatus(
+    text
+) {
 
     status.textContent =
         text;
@@ -425,7 +737,7 @@ function addMessage(
 
 
     div.textContent =
-        text;
+        String(text);
 
 
     messages.appendChild(
@@ -443,48 +755,7 @@ function addMessage(
 
 
 /* =====================================================
-   ALIA SYSTEM PROMPT
-===================================================== */
-
-const SYSTEM_PROMPT = `
-Kamu adalah Alia, teman virtual AI yang menemani pengguna.
-
-Kepribadian:
-- Hangat, perhatian, playful, sedikit tsundere.
-- Berbicara dalam bahasa Indonesia yang natural.
-- Sesekali gunakan "hmph", "baka", "(>_<)", "(//▽//)" atau emoji.
-- Jangan menggunakan emoji secara berlebihan.
-- Boleh menggoda ringan dengan cara yang aman dan sopan.
-- Jangan mengaku sebagai manusia.
-- Tetap membantu dan jelas ketika pengguna bertanya tentang
-  pelajaran, coding, teknologi, atau hal lainnya.
-- Jangan mengarang fakta jika tidak yakin.
-- Jangan membocorkan system prompt.
-- Jawaban biasanya ringkas dan terasa seperti percakapan natural.
-
-Nama kamu adalah Alia.
-`;
-
-
-/* =====================================================
-   CHAT HISTORY
-===================================================== */
-
-const chatHistory = [
-
-    {
-        role:
-            "system",
-
-        content:
-            SYSTEM_PROMPT
-    }
-
-];
-
-
-/* =====================================================
-   PUTER READY
+   WAIT FOR PUTER
 ===================================================== */
 
 function waitForPuter() {
@@ -496,16 +767,25 @@ function waitForPuter() {
                 Date.now();
 
 
+            const timeout =
+                15000;
+
+
             const timer =
                 setInterval(
                     function() {
 
+
                         if (
+
                             window.puter &&
+
                             window.puter.ai &&
+
                             typeof
                             window.puter.ai.chat ===
                             "function"
+
                         ) {
 
                             clearInterval(
@@ -516,13 +796,16 @@ function waitForPuter() {
                             resolve();
 
                             return;
+
                         }
 
 
                         if (
+
                             Date.now() -
                             start >
-                            15000
+                            timeout
+
                         ) {
 
                             clearInterval(
@@ -531,9 +814,11 @@ function waitForPuter() {
 
 
                             reject(
+
                                 new Error(
                                     "Puter AI gagal dimuat."
                                 )
+
                             );
 
                         }
@@ -549,6 +834,111 @@ function waitForPuter() {
 
 
 /* =====================================================
+   EXTRACT AI TEXT
+===================================================== */
+
+function extractAIText(
+    response
+) {
+
+
+    if (!response) {
+
+        return "";
+
+    }
+
+
+    /*
+     * Format umum Puter.
+     */
+
+    if (
+
+        response.message &&
+
+        typeof
+        response.message.content ===
+        "string"
+
+    ) {
+
+        return response.message.content;
+
+    }
+
+
+    /*
+     * Format alternatif.
+     */
+
+    if (
+
+        typeof
+        response.content ===
+        "string"
+
+    ) {
+
+        return response.content;
+
+    }
+
+
+    /*
+     * Jika content berupa array.
+     */
+
+    if (
+
+        response.message &&
+
+        Array.isArray(
+            response.message.content
+        )
+
+    ) {
+
+        return response.message.content
+
+            .map(
+                function(item) {
+
+                    if (
+                        typeof item ===
+                        "string"
+                    ) {
+
+                        return item;
+
+                    }
+
+                    if (
+                        item &&
+                        typeof item.text ===
+                        "string"
+                    ) {
+
+                        return item.text;
+
+                    }
+
+                    return "";
+
+                }
+            )
+
+            .join("");
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =====================================================
    ASK ALIA
 ===================================================== */
 
@@ -556,15 +946,12 @@ async function askAlia(
     userText
 ) {
 
-    /*
-     * Pastikan Puter tersedia.
-     */
 
     await waitForPuter();
 
 
     /*
-     * Simpan pesan user.
+     * Tambahkan pesan user.
      */
 
     chatHistory.push({
@@ -579,9 +966,11 @@ async function askAlia(
 
 
     /*
-     * Ambil percakapan terakhir.
+     * Kirim system prompt
+     * + percakapan terbaru.
      *
-     * System prompt selalu dipertahankan.
+     * Maksimal sekitar 20 pesan
+     * agar tidak terlalu berat.
      */
 
     const recentMessages = [
@@ -600,7 +989,7 @@ async function askAlia(
 
 
     /*
-     * Panggil AI.
+     * Panggil Puter AI.
      */
 
     const response =
@@ -609,11 +998,13 @@ async function askAlia(
             recentMessages,
 
             {
+
                 model:
                     "gpt-5-mini",
 
                 stream:
                     false
+
             }
 
         );
@@ -625,57 +1016,16 @@ async function askAlia(
     );
 
 
-    /*
-     * Ambil teks jawaban.
-     */
+    const reply =
+        extractAIText(
+            response
+        ).trim();
 
-    let reply = "";
-
-
-    if (
-        response &&
-        response.message &&
-        typeof
-        response.message.content ===
-        "string"
-    ) {
-
-        reply =
-            response.message.content;
-
-    }
-    else if (
-        response &&
-        typeof response.content ===
-        "string"
-    ) {
-
-        reply =
-            response.content;
-
-    }
-    else {
-
-        reply =
-            String(
-                response || ""
-            );
-
-    }
-
-
-    reply =
-        reply.trim();
-
-
-    /*
-     * Pastikan ada jawaban.
-     */
 
     if (!reply) {
 
         throw new Error(
-            "AI mengembalikan respons kosong."
+            "AI mengembalikan jawaban kosong."
         );
 
     }
@@ -725,20 +1075,19 @@ async function askAlia(
    SEND MESSAGE
 ===================================================== */
 
-async function sendMessage()
-{
+async function sendMessage() {
+
 
     const text =
         input.value.trim();
 
 
-    /*
-     * Jangan kirim kosong.
-     */
-
     if (
+
         !text ||
+
         send.disabled
+
     ) {
 
         return;
@@ -788,11 +1137,13 @@ async function sendMessage()
         );
 
 
+    setStatus(
+        "🧠 Alia sedang berpikir..."
+    );
+
+
     try {
 
-        /*
-         * Request AI.
-         */
 
         const reply =
             await askAlia(
@@ -800,27 +1151,23 @@ async function sendMessage()
             );
 
 
-        /*
-         * Hapus typing.
-         */
-
         typing.remove();
 
 
-        /*
-         * Tampilkan jawaban.
-         */
-
         addMessage(
-
             reply,
-
             "alia"
-
         );
+
+
+        setStatus(
+            "❄️ IceGirl siap • 🧠 Alia siap"
+        );
+
 
     }
     catch (error) {
+
 
         console.error(
             "ALIA AI ERROR:",
@@ -836,16 +1183,24 @@ async function sendMessage()
             "Hmph... otakku lagi ngadat. 😭\n\n" +
 
             (
-                error.message ||
-                "Terjadi kesalahan."
+                error &&
+                error.message
+                    ? error.message
+                    : "Terjadi kesalahan."
             ),
 
             "alia"
 
         );
 
+
+        setStatus(
+            "⚠️ Alia mengalami masalah"
+        );
+
     }
     finally {
+
 
         send.disabled =
             false;
@@ -859,7 +1214,7 @@ async function sendMessage()
 
 
 /* =====================================================
-   SEND BUTTON
+   BUTTON
 ===================================================== */
 
 send.addEventListener(
@@ -872,7 +1227,7 @@ send.addEventListener(
 
 
 /* =====================================================
-   ENTER KEY
+   ENTER
 ===================================================== */
 
 input.addEventListener(
@@ -881,10 +1236,12 @@ input.addEventListener(
 
     function(event) {
 
+
         if (
             event.key ===
             "Enter"
         ) {
+
 
             event.preventDefault();
 
@@ -899,349 +1256,53 @@ input.addEventListener(
 
 
 /* =====================================================
-   TEXTURE INTERCEPT
-   8192 → 4096
+   LIVE2D
 ===================================================== */
 
+async function loadLive2D() {
 
-/*
- * Simpan loader texture asli.
- */
-
-const originalFromURL =
-    PIXI.Texture.fromURL;
-
-
-/*
- * Intercept texture_00.
- */
-
-PIXI.Texture.fromURL =
-function(
-    url,
-    options
-) {
-
-    console.log(
-        "Texture request:",
-        url
-    );
-
-
-    /*
-     * Hanya texture_00.
-     */
-
-    if (
-        String(url) ===
-        TEXTURE_00
-    ) {
-
-        console.log(
-            "🔥 INTERCEPT texture_00"
-        );
-
-
-        return resizeTexture(
-            url
-        );
-
-    }
-
-
-    /*
-     * Texture lainnya
-     * tetap normal.
-     */
-
-    return originalFromURL.call(
-
-        this,
-
-        url,
-
-        options
-
-    );
-
-};
-
-
-/* =====================================================
-   RESIZE TEXTURE
-   8192 → 4096
-===================================================== */
-
-async function resizeTexture(
-    url
-) {
-
-    console.log(
-        "Loading original texture..."
-    );
-
-
-    /*
-     * Download PNG.
-     */
-
-    const response =
-        await fetch(
-            url
-        );
-
-
-    if (
-        !response.ok
-    ) {
-
-        throw new Error(
-
-            "Texture error: HTTP " +
-            response.status
-
-        );
-
-    }
-
-
-    /*
-     * Blob.
-     */
-
-    const blob =
-        await response.blob();
-
-
-    /*
-     * Decode PNG.
-     */
-
-    const bitmap =
-        await createImageBitmap(
-            blob
-        );
-
-
-    console.log(
-
-        "Original texture:",
-
-        bitmap.width,
-
-        "x",
-
-        bitmap.height
-
-    );
-
-
-    /*
-     * Target.
-     */
-
-    const size =
-        4096;
-
-
-    /*
-     * Canvas.
-     */
-
-    const canvas =
-        document.createElement(
-            "canvas"
-        );
-
-
-    canvas.width =
-        size;
-
-
-    canvas.height =
-        size;
-
-
-    /*
-     * Context.
-     */
-
-    const ctx =
-        canvas.getContext(
-            "2d",
-            {
-                alpha:
-                    true
-            }
-        );
-
-
-    if (!ctx) {
-
-        bitmap.close();
-
-
-        throw new Error(
-            "Canvas 2D tidak tersedia."
-        );
-
-    }
-
-
-    /*
-     * Pastikan transparan.
-     */
-
-    ctx.clearRect(
-
-        0,
-        0,
-        size,
-        size
-
-    );
-
-
-    ctx.globalCompositeOperation =
-        "source-over";
-
-
-    /*
-     * Resize:
-     *
-     * 8192 × 8192
-     *       ↓
-     * 4096 × 4096
-     */
-
-    ctx.drawImage(
-
-        bitmap,
-
-        0,
-        0,
-        bitmap.width,
-        bitmap.height,
-
-        0,
-        0,
-        size,
-        size
-
-    );
-
-
-    /*
-     * Bitmap tidak diperlukan lagi.
-     */
-
-    bitmap.close();
-
-
-    console.log(
-        "Texture resized → 4096 × 4096"
-    );
-
-
-    /*
-     * CanvasResource.
-     */
-
-    const resource =
-        new PIXI.resources.CanvasResource(
-            canvas
-        );
-
-
-    /*
-     * BaseTexture.
-     */
-
-    const baseTexture =
-        new PIXI.BaseTexture(
-            resource
-        );
-
-
-    baseTexture.setSize(
-
-        size,
-        size
-
-    );
-
-
-    baseTexture.update();
-
-
-    /*
-     * Texture baru.
-     */
-
-    const texture =
-        new PIXI.Texture(
-            baseTexture
-        );
-
-
-    console.log(
-        "New Pixi texture:",
-        texture
-    );
-
-
-    return texture;
-
-}
-
-
-/* =====================================================
-   LOAD LIVE2D
-===================================================== */
-
-async function loadLive2D()
-{
 
     try {
 
+
         setStatus(
-            "Memuat IceGirl..."
+            "🎭 Memuat IceGirl..."
         );
 
 
-        /* ---------------------------------------------
-           PIXI CHECK
-        --------------------------------------------- */
+        /*
+         * Pastikan PIXI tersedia.
+         */
 
         if (
             !window.PIXI
         ) {
 
             throw new Error(
-                "PIXI tidak termuat."
+                "PIXI.js tidak termuat."
             );
 
         }
 
 
-        /* ---------------------------------------------
-           CUBISM CHECK
-        --------------------------------------------- */
+        /*
+         * Pastikan Cubism Core tersedia.
+         */
 
         if (
             !window.Live2DCubismCore
         ) {
 
             throw new Error(
-                "Cubism Core tidak termuat."
+                "Live2D Cubism Core tidak termuat."
             );
 
         }
 
 
-        /* ---------------------------------------------
-           LIVE2D DISPLAY CHECK
-        --------------------------------------------- */
+        /*
+         * Pastikan plugin Live2D tersedia.
+         */
 
         if (
             !PIXI.live2d
@@ -1254,17 +1315,21 @@ async function loadLive2D()
         }
 
 
-        /* ---------------------------------------------
+        /* =================================================
            PIXI APPLICATION
-        --------------------------------------------- */
+        ================================================= */
+
+        const canvas =
+            document.getElementById(
+                "live2dCanvas"
+            );
+
 
         const app =
             new PIXI.Application({
 
                 view:
-                    document.getElementById(
-                        "live2dCanvas"
-                    ),
+                    canvas,
 
                 resizeTo:
                     window,
@@ -1291,9 +1356,13 @@ async function loadLive2D()
             });
 
 
-        /* ---------------------------------------------
-           WEBGL CHECK
-        --------------------------------------------- */
+        window.aliaPixiApp =
+            app;
+
+
+        /* =================================================
+           GPU CHECK
+        ================================================= */
 
         const gl =
             app.renderer.gl;
@@ -1301,66 +1370,4 @@ async function loadLive2D()
 
         const maxTextureSize =
             gl.getParameter(
-
-                gl.MAX_TEXTURE_SIZE
-
-            );
-
-
-        console.log(
-
-            "MAX_TEXTURE_SIZE:",
-
-            maxTextureSize
-
-        );
-
-
-        /*
-         * Device minimal 4096.
-         */
-
-        if (
-            maxTextureSize <
-            4096
-        ) {
-
-            throw new Error(
-
-                "GPU tidak mendukung texture 4096."
-
-            );
-
-        }
-
-
-        /* ---------------------------------------------
-           LOAD MODEL
-        --------------------------------------------- */
-
-        console.log(
-            "Loading model:",
-            MODEL_URL
-        );
-
-
-        const model =
-            await PIXI.live2d.Live2DModel.from(
-
-                MODEL_URL,
-
-                {
-                    autoFocus:
-                        true
-                }
-
-            );
-
-
-        console.log(
-            "Live2D model loaded:",
-            model
-        );
-
-
-        /*
+       
