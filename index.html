@@ -1211,15 +1211,17 @@ async function loadLive2D() {
            RESIZE MODEL
         ------------------------------------------------- */
 
-    function resizeModel(
+        function resizeModel(
             force = false
         ) {
 
             const currentWidth =
                 window.innerWidth;
 
+
             const currentHeight =
                 window.innerHeight;
+
 
             /*
              * Android biasanya mengubah
@@ -1233,14 +1235,20 @@ async function loadLive2D() {
                 currentWidth !==
                 baseScreenWidth;
 
+
             const heightChanged =
                 currentHeight !==
                 baseScreenHeight;
 
 
             if (
+
                 !force &&
-                !widthChanged
+
+                !widthChanged &&
+
+                heightChanged
+
             ) {
 
                 return;
@@ -1249,49 +1257,189 @@ async function loadLive2D() {
 
 
             /*
-             * Kalau lebarnya tetap tetapi
-             * tingginya berubah, kemungkinan
-             * keyboard Android.
+             * Lebar berubah berarti kemungkinan
+             * rotasi atau perubahan layar nyata.
              */
 
             if (
-                currentWidth ===
-                baseScreenWidth
+                widthChanged
             ) {
 
-                return;
+                baseScreenWidth =
+                    currentWidth;
+
+                baseScreenHeight =
+                    currentHeight;
 
             }
 
 
+            const screenWidth =
+                baseScreenWidth;
+
+
+            const screenHeight =
+                baseScreenHeight;
+
+
             /*
-             * Lebar berubah:
-             * kemungkinan rotasi layar.
+             * Renderer diatur manual.
              */
 
-            baseScreenWidth =
-                currentWidth;
-
-            baseScreenHeight =
-                currentHeight;
+            app.renderer.resize(
+                screenWidth,
+                screenHeight
+            );
 
 
             /*
-             * Jangan mengubah scale model
-             * di sini.
+             * Target tinggi model.
+             */
+
+            const targetHeight =
+                screenHeight *
+                (
+                    screenWidth <= 600
+                        ? 0.78
+                        : 0.86
+                );
+
+
+            /*
+             * Hitung scale berdasarkan
+             * ukuran ASLI model.
              *
-             * Ukuran Live2D dipertahankan
-             * seperti konfigurasi model.
+             * BUKAN model.height.
              */
+
+            const scale =
+                targetHeight /
+                originalModelHeight;
+
+
+            model.scale.set(
+                scale
+            );
+
+
+            /*
+             * Posisi horizontal.
+             */
+
+            model.x =
+                screenWidth /
+                2;
+
+
+            /*
+             * Posisi vertikal.
+             */
+
+            model.y =
+                screenHeight *
+                (
+                    screenWidth <= 600
+                        ? 0.02
+                        : 0.01
+                );
+
+
+            /*
+             * Anchor.
+             */
+
+            if (
+                model.anchor
+            ) {
+
+                model.anchor.set(
+                    0.5,
+                    0
+                );
+
+            }
+
+
+            console.log(
+                "Live2D resized:",
+                {
+
+                    width:
+                        screenWidth,
+
+                    height:
+                        screenHeight,
+
+                    originalHeight:
+                        originalModelHeight,
+
+                    targetHeight:
+                        targetHeight,
+
+                    scale:
+                        scale
+
+                }
+            );
 
         }
 
+
+        /* -------------------------------------------------
+           INITIAL RESIZE
+        ------------------------------------------------- */
+
+        resizeModel(
+            true
+        );
+
+
+        /* -------------------------------------------------
+           WINDOW RESIZE
+        ------------------------------------------------- */
 
         window.addEventListener(
             "resize",
             function() {
 
-                resizeModel();
+                const currentWidth =
+                    window.innerWidth;
+
+
+                /*
+                 * Kalau lebar tidak berubah,
+                 * perubahan kemungkinan berasal
+                 * dari keyboard Android.
+                 *
+                 * Jangan resize Live2D.
+                 */
+
+                if (
+                    currentWidth ===
+                    baseScreenWidth
+                ) {
+
+                    return;
+
+                }
+
+
+                /*
+                 * Lebar berubah:
+                 * kemungkinan rotasi layar.
+                 */
+
+                baseScreenWidth =
+                    currentWidth;
+
+
+                baseScreenHeight =
+                    window.innerHeight;
+
+
+                resizeModel(
+                    true
+                );
 
             }
         );
@@ -1304,6 +1452,7 @@ async function loadLive2D() {
         setStatus(
             "❄️ IceGirl siap • 🧠 Alia siap"
         );
+
 
         console.log(
             "✅ Alia × IceGirl siap."
@@ -1319,9 +1468,11 @@ async function loadLive2D() {
             error
         );
 
+
         setStatus(
             "⚠️ Live2D gagal dimuat"
         );
+
 
         console.error(
             "Pesan error:",
