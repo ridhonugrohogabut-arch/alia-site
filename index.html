@@ -838,332 +838,6 @@ async function askAlia(
 
 
 /* =====================================================
-   ALIA TTS
-===================================================== */
-
-/*
- * Hugging Face Space:
- *
- * Hehehaha1976/alia-tts
- *
- * Kita menggunakan Gradio Client langsung.
- */
-
-const ALIA_TTS_SPACE =
-    "Hehehaha1976/alia-tts";
-
-let aliaTTSClient =
-    null;
-
-let aliaTTSLoading =
-    null;
-
-
-/*
- * Load Gradio client secara dinamis.
- *
- * Dengan cara ini kita tidak perlu
- * menambah file dependency ke GitHub Pages.
- */
-
-async function getAliaTTSClient() {
-
-    if (
-        aliaTTSClient
-    ) {
-
-        return aliaTTSClient;
-
-    }
-
-
-    if (
-        aliaTTSLoading
-    ) {
-
-        return aliaTTSLoading;
-
-    }
-
-
-    aliaTTSLoading =
-        import(
-            "https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js"
-        )
-
-        .then(
-            async function(module) {
-
-                const Client =
-                    module.Client;
-
-                if (!Client) {
-
-                    throw new Error(
-                        "Gradio Client gagal dimuat."
-                    );
-
-                }
-
-                aliaTTSClient =
-                    await Client.connect(
-                        ALIA_TTS_SPACE
-                    );
-
-                console.log(
-                    "✅ Alia TTS terhubung."
-                );
-
-                return aliaTTSClient;
-
-            }
-        )
-
-        .catch(
-            function(error) {
-
-                aliaTTSLoading =
-                    null;
-
-                throw error;
-
-            }
-        );
-
-
-    return aliaTTSLoading;
-
-}
-
-
-/*
- * Memutar suara Alia.
- */
-
-async function speakAlia(
-    text
-) {
-
-    if (
-        !text ||
-        !text.trim()
-    ) {
-
-        return;
-
-    }
-
-
-    try {
-
-        setStatus(
-            "🎙️ Alia sedang berbicara..."
-        );
-
-
-        const client =
-            await getAliaTTSClient();
-
-
-        console.log(
-            "🎙️ Mengirim ke Alia TTS:",
-            text
-        );
-
-
-        /*
-         * generate_voice adalah nama
-         * fungsi Python di Space.
-         *
-         * Gradio akan mengeksposnya
-         * sebagai API endpoint.
-         */
-
-        const result =
-            await client.predict(
-                "/generate_voice",
-                [
-                    text
-                ]
-            );
-
-
-        console.log(
-            "🔊 Hasil TTS:",
-            result
-        );
-
-
-        if (
-            !result ||
-            !result.data ||
-            !result.data.length
-        ) {
-
-            throw new Error(
-                "TTS tidak mengembalikan audio."
-            );
-
-        }
-
-
-        const audioData =
-            result.data[0];
-
-
-        let audioURL =
-            null;
-
-
-        /*
-         * Format file dari Gradio.
-         */
-
-        if (
-            typeof audioData ===
-            "string"
-        ) {
-
-            audioURL =
-                audioData;
-
-        }
-
-
-        else if (
-
-            audioData &&
-
-            typeof audioData.url ===
-            "string"
-
-        ) {
-
-            audioURL =
-                audioData.url;
-
-        }
-
-
-        else if (
-
-            audioData &&
-
-            typeof audioData.path ===
-            "string"
-
-        ) {
-
-            audioURL =
-                audioData.path;
-
-        }
-
-
-        if (!audioURL) {
-
-            throw new Error(
-                "Format audio Gradio tidak dikenali."
-            );
-
-        }
-
-
-        /*
-         * Hentikan audio sebelumnya
-         * kalau ada.
-         */
-
-        if (
-            window.aliaCurrentAudio
-        ) {
-
-            try {
-
-                window.aliaCurrentAudio.pause();
-
-                window.aliaCurrentAudio.currentTime =
-                    0;
-
-            }
-
-            catch (_) {}
-
-        }
-
-
-        const audio =
-            new Audio(
-                audioURL
-            );
-
-
-        audio.preload =
-            "auto";
-
-
-        window.aliaCurrentAudio =
-            audio;
-
-
-        /*
-         * Tunggu sampai selesai.
-         */
-
-        audio.addEventListener(
-            "ended",
-            function() {
-
-                if (
-                    window.aliaCurrentAudio ===
-                    audio
-                ) {
-
-                    window.aliaCurrentAudio =
-                        null;
-
-                }
-
-
-                setStatus(
-                    "❄️ IceGirl siap • 🧠 Alia siap"
-                );
-
-            },
-            {
-                once: true
-            }
-        );
-
-
-        await audio.play();
-
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "ALIA TTS ERROR:",
-            error
-        );
-
-
-        /*
-         * TTS gagal tidak boleh
-         * membuat chat AI gagal.
-         */
-
-        setStatus(
-            "❄️ IceGirl siap • 🧠 Alia siap"
-        );
-
-    }
-
-}
-
-
-/* =====================================================
    SEND MESSAGE
 ===================================================== */
 
@@ -1224,27 +898,9 @@ async function sendMessage() {
         typing.remove();
 
 
-        /*
-         * Tampilkan teks dahulu.
-         */
-
         addMessage(
             reply,
             "alia"
-        );
-
-
-        /*
-         * Baru kirim seluruh jawaban
-         * ke TTS.
-         *
-         * Tidak dipotong berdasarkan
-         * titik / tanda tanya / seru
-         * di sisi website.
-         */
-
-        speakAlia(
-            reply
         );
 
 
@@ -1397,11 +1053,19 @@ async function loadLive2D() {
                 "live2dCanvas"
             );
 
+
         const app =
             new PIXI.Application({
 
                 view:
                     canvas,
+
+                /*
+                 * resizeTo: window DIHAPUS.
+                 *
+                 * Android dapat mengubah ukuran
+                 * viewport ketika keyboard muncul.
+                 */
 
                 transparent:
                     true,
@@ -1424,6 +1088,7 @@ async function loadLive2D() {
 
             });
 
+
         window.aliaPixiApp =
             app;
 
@@ -1435,10 +1100,12 @@ async function loadLive2D() {
         const gl =
             app.renderer.gl;
 
+
         const maxTextureSize =
             gl.getParameter(
                 gl.MAX_TEXTURE_SIZE
             );
+
 
         console.log(
             "GPU MAX_TEXTURE_SIZE:",
@@ -1454,10 +1121,12 @@ async function loadLive2D() {
             "🎭 Memuat IceGirl..."
         );
 
+
         console.log(
             "Loading Live2D:",
             MODEL_URL
         );
+
 
         const model =
             await PIXI.live2d.Live2DModel.from(
@@ -1471,10 +1140,12 @@ async function loadLive2D() {
                 }
             );
 
+
         console.log(
             "Live2D berhasil dimuat:",
             model
         );
+
 
         window.aliaLive2D =
             model;
@@ -1496,11 +1167,27 @@ async function loadLive2D() {
         let baseScreenWidth =
             window.innerWidth;
 
+
         let baseScreenHeight =
             window.innerHeight;
 
+
+        /*
+         * PENTING:
+         *
+         * Ambil model.height HANYA SEKALI,
+         * sebelum scale diubah.
+         *
+         * Setelah model.scale.set(),
+         * model.height ikut berubah.
+         *
+         * Jadi jangan gunakan model.height
+         * lagi sebagai dasar perhitungan scale.
+         */
+
         const originalModelHeight =
             model.height;
+
 
         if (
             !originalModelHeight ||
@@ -1513,6 +1200,7 @@ async function loadLive2D() {
 
         }
 
+
         console.log(
             "Original Live2D height:",
             originalModelHeight
@@ -1523,7 +1211,7 @@ async function loadLive2D() {
            RESIZE MODEL
         ------------------------------------------------- */
 
-        function resizeModel(
+    function resizeModel(
             force = false
         ) {
 
@@ -1534,11 +1222,36 @@ async function loadLive2D() {
                 window.innerHeight;
 
             /*
-             * Kalau hanya tinggi viewport
-             * yang berubah, biasanya keyboard
-             * Android sedang muncul.
+             * Android biasanya mengubah
+             * innerHeight ketika keyboard muncul.
              *
-             * Jangan ubah ukuran Live2D.
+             * Kalau hanya tinggi yang berubah,
+             * jangan resize Live2D.
+             */
+
+            const widthChanged =
+                currentWidth !==
+                baseScreenWidth;
+
+            const heightChanged =
+                currentHeight !==
+                baseScreenHeight;
+
+
+            if (
+                !force &&
+                !widthChanged
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+             * Kalau lebarnya tetap tetapi
+             * tingginya berubah, kemungkinan
+             * keyboard Android.
              */
 
             if (
@@ -1550,6 +1263,7 @@ async function loadLive2D() {
 
             }
 
+
             /*
              * Lebar berubah:
              * kemungkinan rotasi layar.
@@ -1560,6 +1274,15 @@ async function loadLive2D() {
 
             baseScreenHeight =
                 currentHeight;
+
+
+            /*
+             * Jangan mengubah scale model
+             * di sini.
+             *
+             * Ukuran Live2D dipertahankan
+             * seperti konfigurasi model.
+             */
 
         }
 
