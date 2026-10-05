@@ -387,6 +387,117 @@ const send =
     document.getElementById(
         "send"
     );
+     const TTS_WORKER_URL =
+    "https://alia-tts.ridhonugrohogabut.workers.dev";
+
+let currentAudio = null;
+
+async function speakAlia(text) {
+
+    try {
+
+        console.log("🎙️ Meminta suara Alia...");
+
+        const response = await fetch(
+            TTS_WORKER_URL,
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+                    text: text
+                })
+            }
+        );
+
+        console.log(
+            "TTS STATUS:",
+            response.status
+        );
+
+        console.log(
+            "TTS TYPE:",
+            response.headers.get(
+                "content-type"
+            )
+        );
+
+        if (!response.ok) {
+
+            console.error(
+                "TTS ERROR:",
+                await response.text()
+            );
+
+            return;
+        }
+
+        const audioBlob =
+            await response.blob();
+
+        console.log(
+            "TTS SIZE:",
+            audioBlob.size
+        );
+
+        console.log(
+            "TTS BLOB TYPE:",
+            audioBlob.type
+        );
+
+        if (!audioBlob.size) {
+
+            console.error(
+                "Audio kosong."
+            );
+
+            return;
+        }
+
+        const audioURL =
+            URL.createObjectURL(
+                audioBlob
+            );
+
+        if (currentAudio) {
+
+            currentAudio.pause();
+
+        }
+
+        currentAudio =
+            new Audio(audioURL);
+
+        currentAudio.onended =
+            function() {
+
+                URL.revokeObjectURL(
+                    audioURL
+                );
+
+            };
+
+        await currentAudio.play();
+
+        console.log(
+            "🔊 SUARA ALIA DIPUTAR"
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "❌ TTS ERROR:",
+            error
+        );
+
+    }
+
+}
 /* =====================================================
    ELEVENLABS TTS
 ===================================================== */
