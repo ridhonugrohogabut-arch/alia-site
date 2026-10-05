@@ -1,16 +1,39 @@
-<!DOCTYPE html><html lang="id">
+<!DOCTYPE html>
+<html lang="id">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Alia × IceGirl</title><script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.10/dist/browser/pixi.min.js"></script><script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/cubism4.min.js"></script><script src="https://js.puter.com/v2/"></script><style>
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Alia × IceGirl</title>
+
+<script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.10/dist/browser/pixi.min.js"></script>
+
+<script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/cubism4.min.js"></script>
+
+<script src="https://js.puter.com/v2/"></script>
+
+<style>
+
 * {
     box-sizing: border-box;
 }
 
 html,
 body {
+
     margin: 0;
+
     width: 100%;
     height: 100%;
+
     overflow: hidden;
 
     background:
@@ -30,24 +53,31 @@ body {
 }
 
 #app {
+
     position: relative;
+
     width: 100%;
     height: 100%;
+
     overflow: hidden;
 }
 
 #live2dCanvas {
+
     position: absolute;
+
     inset: 0;
 
     width: 100%;
     height: 100%;
 
     z-index: 1;
+
     display: block;
 }
 
 #header {
+
     position: absolute;
 
     top: 16px;
@@ -79,6 +109,7 @@ body {
 }
 
 #status {
+
     position: absolute;
 
     top: 58px;
@@ -95,6 +126,7 @@ body {
 }
 
 #chat {
+
     position: absolute;
 
     left: 50%;
@@ -112,6 +144,7 @@ body {
         min(38vh, 360px);
 
     display: flex;
+
     flex-direction: column;
 
     background:
@@ -134,6 +167,7 @@ body {
 }
 
 #messages {
+
     flex: 1;
 
     overflow-y: auto;
@@ -141,6 +175,7 @@ body {
     padding: 14px;
 
     display: flex;
+
     flex-direction: column;
 
     gap: 9px;
@@ -149,6 +184,7 @@ body {
 }
 
 .message {
+
     max-width: 85%;
 
     padding:
@@ -169,6 +205,7 @@ body {
 }
 
 @keyframes messageIn {
+
     from {
         opacity: 0;
         transform:
@@ -180,9 +217,11 @@ body {
         transform:
             translateY(0);
     }
+
 }
 
 .message.alia {
+
     align-self: flex-start;
 
     background:
@@ -194,6 +233,7 @@ body {
 }
 
 .message.user {
+
     align-self: flex-end;
 
     background:
@@ -205,11 +245,14 @@ body {
 }
 
 .message.typing {
+
     opacity: .65;
+
     font-style: italic;
 }
 
 #inputArea {
+
     display: flex;
 
     gap: 8px;
@@ -222,11 +265,13 @@ body {
 }
 
 #input {
+
     flex: 1;
 
     min-width: 0;
 
     border: 0;
+
     outline: none;
 
     padding:
@@ -243,11 +288,14 @@ body {
 }
 
 #input::placeholder {
+
     color:
         rgba(255, 255, 255, .45);
+
 }
 
 #send {
+
     width: 46px;
 
     border: 0;
@@ -265,28 +313,39 @@ body {
 }
 
 #send:active {
+
     transform:
         scale(.92);
+
 }
 
 #send:disabled {
+
     opacity: .45;
+
     cursor:
         not-allowed;
+
 }
 
 @media (max-width: 600px) {
+
     #header {
+
         top: 10px;
         left: 10px;
+
     }
 
     #status {
+
         top: 52px;
         left: 10px;
+
     }
 
     #chat {
+
         width:
             calc(100% - 20px);
 
@@ -295,22 +354,46 @@ body {
         height: 35vh;
 
         border-radius: 18px;
+
     }
 
     .message {
+
         max-width: 90%;
+
         font-size: 13px;
+
     }
+
 }
-</style></head><body><div id="app"><canvas id="live2dCanvas"></canvas>
+
+</style>
+
+</head>
+
+<body>
+
+<div id="app">
+
+<canvas id="live2dCanvas"></canvas>
 
 <div id="header">
-    ❄️ <b>Alia</b> × IceGirl
-</div><div id="status">
-    🎭 Memuat IceGirl...
-</div><div id="chat"><div id="messages">
 
-    <div class="message alia">
+    ❄️ <b>Alia</b> × IceGirl
+
+</div>
+
+<div id="status">
+
+    🎭 Memuat IceGirl...
+
+</div>
+
+<div id="chat">
+
+    <div id="messages">
+
+        <div class="message alia">
 
 Hmph... akhirnya kamu datang juga. 😤
 
@@ -321,29 +404,33 @@ berarti aku nungguin kamu ya...
 
 B-baka. (//▽//)
 
+        </div>
+
+    </div>
+
+    <div id="inputArea">
+
+        <input
+            id="input"
+            type="text"
+            autocomplete="off"
+            placeholder="Ketik pesan..."
+        >
+
+        <button
+            id="send"
+            type="button"
+        >
+            ➤
+        </button>
+
     </div>
 
 </div>
 
-<div id="inputArea">
-
-    <input
-        id="input"
-        type="text"
-        autocomplete="off"
-        placeholder="Ketik pesan..."
-    >
-
-    <button
-        id="send"
-        type="button"
-    >
-        ➤
-    </button>
-
 </div>
 
-</div></div><script>
+<script>
 
 /* =====================================================
    LIVE2D CONFIG
@@ -426,6 +513,7 @@ function addMessage(
         messages.scrollHeight;
 
     return div;
+
 }
 
 
@@ -518,8 +606,8 @@ function waitForPuter() {
                             resolve();
 
                             return;
-                        }
 
+                        }
 
                         if (
 
@@ -560,7 +648,9 @@ function extractAIText(
 ) {
 
     if (!response) {
+
         return "";
+
     }
 
 
@@ -616,7 +706,6 @@ function extractAIText(
 
                     }
 
-
                     if (
 
                         item &&
@@ -630,7 +719,6 @@ function extractAIText(
 
                     }
 
-
                     return "";
 
                 }
@@ -642,6 +730,7 @@ function extractAIText(
 
 
     return "";
+
 }
 
 
@@ -684,9 +773,7 @@ async function askAlia(
 
     const response =
         await puter.ai.chat(
-
             recentMessages,
-
             {
 
                 model:
@@ -696,7 +783,6 @@ async function askAlia(
                     false
 
             }
-
         );
 
 
@@ -738,17 +824,16 @@ async function askAlia(
     ) {
 
         chatHistory.splice(
-
             1,
-
-            chatHistory.length - 21
-
+            chatHistory.length -
+            21
         );
 
     }
 
 
     return reply;
+
 }
 
 
@@ -791,13 +876,9 @@ async function sendMessage() {
 
     const typing =
         addMessage(
-
             "Alia sedang berpikir...",
-
             "alia",
-
             "typing"
-
         );
 
 
@@ -847,7 +928,6 @@ async function sendMessage() {
             (
 
                 error &&
-
                 error.message
 
                     ? error.message
@@ -980,8 +1060,12 @@ async function loadLive2D() {
                 view:
                     canvas,
 
-                resizeTo:
-                    window,
+                /*
+                 * resizeTo: window DIHAPUS.
+                 *
+                 * Android dapat mengubah ukuran
+                 * viewport ketika keyboard muncul.
+                 */
 
                 transparent:
                     true,
@@ -994,12 +1078,9 @@ async function loadLive2D() {
 
                 resolution:
                     Math.min(
-
                         window.devicePixelRatio ||
                         1,
-
                         2
-
                     ),
 
                 powerPreference:
@@ -1049,19 +1130,14 @@ async function loadLive2D() {
 
         const model =
             await PIXI.live2d.Live2DModel.from(
-
                 MODEL_URL,
-
                 {
-
                     autoInteract:
                         true,
 
                     autoFocus:
                         true
-
                 }
-
             );
 
 
@@ -1086,23 +1162,54 @@ async function loadLive2D() {
 
         /* -------------------------------------------------
            MODEL RESIZE
-           
-           FIX:
-           - Tidak memakai model.height sebagai basis scale.
-           - Menggunakan tinggi asli model yang tetap.
-           - Mengabaikan resize akibat keyboard Android.
         ------------------------------------------------- */
-
-        const originalModelHeight =
-            model.internalModel.height;
-
 
         let baseScreenWidth =
             window.innerWidth;
 
+
         let baseScreenHeight =
             window.innerHeight;
 
+
+        /*
+         * PENTING:
+         *
+         * Ambil model.height HANYA SEKALI,
+         * sebelum scale diubah.
+         *
+         * Setelah model.scale.set(),
+         * model.height ikut berubah.
+         *
+         * Jadi jangan gunakan model.height
+         * lagi sebagai dasar perhitungan scale.
+         */
+
+        const originalModelHeight =
+            model.height;
+
+
+        if (
+            !originalModelHeight ||
+            originalModelHeight <= 0
+        ) {
+
+            throw new Error(
+                "Ukuran asli Live2D tidak valid."
+            );
+
+        }
+
+
+        console.log(
+            "Original Live2D height:",
+            originalModelHeight
+        );
+
+
+        /* -------------------------------------------------
+           RESIZE MODEL
+        ------------------------------------------------- */
 
         function resizeModel(
             force = false
@@ -1111,32 +1218,37 @@ async function loadLive2D() {
             const currentWidth =
                 window.innerWidth;
 
+
             const currentHeight =
                 window.innerHeight;
 
 
             /*
-             * Android dapat mengubah innerHeight
-             * ketika keyboard virtual muncul.
+             * Android biasanya mengubah
+             * innerHeight ketika keyboard muncul.
+             *
+             * Kalau hanya tinggi yang berubah,
+             * jangan resize Live2D.
              */
 
-            const heightDifference =
-                baseScreenHeight -
-                currentHeight;
+            const widthChanged =
+                currentWidth !==
+                baseScreenWidth;
 
 
-            const keyboardOpen =
-                heightDifference > 120;
+            const heightChanged =
+                currentHeight !==
+                baseScreenHeight;
 
-
-            /*
-             * Kalau keyboard terbuka,
-             * jangan resize model.
-             */
 
             if (
-                keyboardOpen &&
-                !force
+
+                !force &&
+
+                !widthChanged &&
+
+                heightChanged
+
             ) {
 
                 return;
@@ -1145,20 +1257,12 @@ async function loadLive2D() {
 
 
             /*
-             * Perubahan ukuran layar normal.
+             * Lebar berubah berarti kemungkinan
+             * rotasi atau perubahan layar nyata.
              */
 
             if (
-                currentWidth !==
-                    baseScreenWidth ||
-
-                (
-                    !keyboardOpen &&
-
-                    currentHeight !==
-                    baseScreenHeight
-
-                )
+                widthChanged
             ) {
 
                 baseScreenWidth =
@@ -1173,35 +1277,39 @@ async function loadLive2D() {
             const screenWidth =
                 baseScreenWidth;
 
+
             const screenHeight =
                 baseScreenHeight;
 
 
             /*
-             * Tinggi target model.
+             * Renderer diatur manual.
+             */
+
+            app.renderer.resize(
+                screenWidth,
+                screenHeight
+            );
+
+
+            /*
+             * Target tinggi model.
              */
 
             const targetHeight =
                 screenHeight *
                 (
-
                     screenWidth <= 600
-
                         ? 0.78
-
                         : 0.86
-
                 );
 
 
             /*
-             * PENTING:
+             * Hitung scale berdasarkan
+             * ukuran ASLI model.
              *
-             * Gunakan tinggi ASLI model.
-             *
-             * Jangan gunakan model.height,
-             * karena model.height berubah
-             * setelah scale diterapkan.
+             * BUKAN model.height.
              */
 
             const scale =
@@ -1230,13 +1338,9 @@ async function loadLive2D() {
             model.y =
                 screenHeight *
                 (
-
                     screenWidth <= 600
-
                         ? 0.02
-
                         : 0.01
-
                 );
 
 
@@ -1249,53 +1353,88 @@ async function loadLive2D() {
             ) {
 
                 model.anchor.set(
-                    0.5, 
-                     0
+                    0.5,
+                    0
                 );
 
             }
 
+
+            console.log(
+                "Live2D resized:",
+                {
+
+                    width:
+                        screenWidth,
+
+                    height:
+                        screenHeight,
+
+                    originalHeight:
+                        originalModelHeight,
+
+                    targetHeight:
+                        targetHeight,
+
+                    scale:
+                        scale
+
+                }
+            );
+
         }
 
 
-        /*
-         * Initial sizing.
-         */
+        /* -------------------------------------------------
+           INITIAL RESIZE
+        ------------------------------------------------- */
 
         resizeModel(
             true
         );
 
 
-        /*
-         * Android keyboard biasanya
-         * memicu window resize.
-         *
-         * Kalau tinggi berkurang >120px,
-         * anggap keyboard sedang terbuka
-         * dan jangan resize Live2D.
-         */
+        /* -------------------------------------------------
+           WINDOW RESIZE
+        ------------------------------------------------- */
 
         window.addEventListener(
             "resize",
             function() {
 
-                const currentHeight =
-                    window.innerHeight;
+                const currentWidth =
+                    window.innerWidth;
 
 
-                const heightDifference =
-                    baseScreenHeight -
-                    currentHeight;
-
+                /*
+                 * Kalau lebar tidak berubah,
+                 * perubahan kemungkinan berasal
+                 * dari keyboard Android.
+                 *
+                 * Jangan resize Live2D.
+                 */
 
                 if (
-                    heightDifference > 120
+                    currentWidth ===
+                    baseScreenWidth
                 ) {
 
                     return;
 
                 }
+
+
+                /*
+                 * Lebar berubah:
+                 * kemungkinan rotasi layar.
+                 */
+
+                baseScreenWidth =
+                    currentWidth;
+
+
+                baseScreenHeight =
+                    window.innerHeight;
 
 
                 resizeModel(
