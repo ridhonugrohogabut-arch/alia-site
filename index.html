@@ -1,31 +1,16 @@
-<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
-
-«»
-
-<title>Alia × IceGirl</title><!-- =====================================================
-     PIXI
-===================================================== --><script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.10/dist/browser/pixi.min.js"></script><!-- =====================================================
-     LIVE2D CUBISM CORE
-===================================================== --><script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script><!-- =====================================================
-     PIXI LIVE2D DISPLAY
-===================================================== --><script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/cubism4.min.js"></script><!-- =====================================================
-     PUTER AI
-===================================================== --><script src="https://js.puter.com/v2/"></script><style>
-
+<!DOCTYPE html><html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Alia × IceGirl</title><script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.10/dist/browser/pixi.min.js"></script><script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/cubism4.min.js"></script><script src="https://js.puter.com/v2/"></script><style>
 * {
     box-sizing: border-box;
 }
 
 html,
 body {
-
     margin: 0;
-
     width: 100%;
     height: 100%;
-
     overflow: hidden;
 
     background:
@@ -44,43 +29,25 @@ body {
         sans-serif;
 }
 
-
 #app {
-
     position: relative;
-
     width: 100%;
     height: 100%;
-
     overflow: hidden;
 }
 
-
-/* =====================================================
-   LIVE2D CANVAS
-===================================================== */
-
 #live2dCanvas {
-
     position: absolute;
-
     inset: 0;
 
     width: 100%;
     height: 100%;
 
     z-index: 1;
-
     display: block;
 }
 
-
-/* =====================================================
-   HEADER
-===================================================== */
-
 #header {
-
     position: absolute;
 
     top: 16px;
@@ -107,20 +74,11 @@ body {
     user-select: none;
 }
 
-
 #header b {
-
     color: #bfe8ff;
-
 }
 
-
-/* =====================================================
-   STATUS
-===================================================== */
-
 #status {
-
     position: absolute;
 
     top: 58px;
@@ -136,13 +94,7 @@ body {
     pointer-events: none;
 }
 
-
-/* =====================================================
-   CHAT
-===================================================== */
-
 #chat {
-
     position: absolute;
 
     left: 50%;
@@ -160,7 +112,6 @@ body {
         min(38vh, 360px);
 
     display: flex;
-
     flex-direction: column;
 
     background:
@@ -182,13 +133,7 @@ body {
     overflow: hidden;
 }
 
-
-/* =====================================================
-   MESSAGES
-===================================================== */
-
 #messages {
-
     flex: 1;
 
     overflow-y: auto;
@@ -196,7 +141,6 @@ body {
     padding: 14px;
 
     display: flex;
-
     flex-direction: column;
 
     gap: 9px;
@@ -204,9 +148,7 @@ body {
     scrollbar-width: thin;
 }
 
-
 .message {
-
     max-width: 85%;
 
     padding:
@@ -226,32 +168,21 @@ body {
         messageIn .18s ease-out;
 }
 
-
 @keyframes messageIn {
-
     from {
-
         opacity: 0;
-
         transform:
             translateY(5px);
-
     }
 
     to {
-
         opacity: 1;
-
         transform:
             translateY(0);
-
     }
-
 }
 
-
 .message.alia {
-
     align-self: flex-start;
 
     background:
@@ -262,9 +193,7 @@ body {
         rgba(145, 205, 255, .18);
 }
 
-
 .message.user {
-
     align-self: flex-end;
 
     background:
@@ -275,21 +204,12 @@ body {
         rgba(255, 255, 255, .06);
 }
 
-
 .message.typing {
-
     opacity: .65;
-
     font-style: italic;
 }
 
-
-/* =====================================================
-   INPUT
-===================================================== */
-
 #inputArea {
-
     display: flex;
 
     gap: 8px;
@@ -301,15 +221,12 @@ body {
         rgba(255, 255, 255, .08);
 }
 
-
 #input {
-
     flex: 1;
 
     min-width: 0;
 
     border: 0;
-
     outline: none;
 
     padding:
@@ -325,17 +242,12 @@ body {
     font-size: 14px;
 }
 
-
 #input::placeholder {
-
     color:
         rgba(255, 255, 255, .45);
-
 }
 
-
 #send {
-
     width: 46px;
 
     border: 0;
@@ -352,49 +264,29 @@ body {
     cursor: pointer;
 }
 
-
 #send:active {
-
     transform:
         scale(.92);
-
 }
-
 
 #send:disabled {
-
     opacity: .45;
-
     cursor:
         not-allowed;
-
 }
 
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
 @media (max-width: 600px) {
-
     #header {
-
         top: 10px;
         left: 10px;
-
     }
-
 
     #status {
-
         top: 52px;
         left: 10px;
-
     }
 
-
     #chat {
-
         width:
             calc(100% - 20px);
 
@@ -403,59 +295,22 @@ body {
         height: 35vh;
 
         border-radius: 18px;
-
     }
-
 
     .message {
-
         max-width: 90%;
-
         font-size: 13px;
-
     }
-
 }
-
-</style></head><body><div id="app"><!-- =================================================
-     LIVE2D
-================================================= -->
-
-<canvas id="live2dCanvas"></canvas>
-
-
-<!-- =================================================
-     HEADER
-================================================= -->
+</style></head><body><div id="app"><canvas id="live2dCanvas"></canvas>
 
 <div id="header">
-
     ❄️ <b>Alia</b> × IceGirl
-
-</div>
-
-
-<!-- =================================================
-     STATUS
-================================================= -->
-
-<div id="status">
-
+</div><div id="status">
     🎭 Memuat IceGirl...
+</div><div id="chat"><div id="messages">
 
-</div>
-
-
-<!-- =================================================
-     CHAT
-================================================= -->
-
-<div id="chat">
-
-
-    <div id="messages">
-
-        <div class="message alia">
+    <div class="message alia">
 
 Hmph... akhirnya kamu datang juga. 😤
 
@@ -466,55 +321,36 @@ berarti aku nungguin kamu ya...
 
 B-baka. (//▽//)
 
-        </div>
-
     </div>
-
-
-    <div id="inputArea">
-
-        <input
-            id="input"
-            type="text"
-            autocomplete="off"
-            placeholder="Ketik pesan..."
-        >
-
-        <button
-            id="send"
-            type="button"
-        >
-            ➤
-        </button>
-
-    </div>
-
 
 </div>
 
-</div><script>
+<div id="inputArea">
 
+    <input
+        id="input"
+        type="text"
+        autocomplete="off"
+        placeholder="Ketik pesan..."
+    >
+
+    <button
+        id="send"
+        type="button"
+    >
+        ➤
+    </button>
+
+</div>
+
+</div></div><script>
 
 /* =====================================================
    LIVE2D CONFIG
 ===================================================== */
 
-
-/*
- * File Live2D berada di dalam Site.
- *
- * Struktur:
- *
- * live2D/
- * └── live2d/
- *     ├── IceGirl.model3.json
- *     ├── ...
- *
- */
-
 const BASE_URL =
     "./live2D/live2d/";
-
 
 const MODEL_URL =
     BASE_URL +
@@ -530,18 +366,15 @@ const status =
         "status"
     );
 
-
 const messages =
     document.getElementById(
         "messages"
     );
 
-
 const input =
     document.getElementById(
         "input"
     );
-
 
 const send =
     document.getElementById(
@@ -576,29 +409,23 @@ function addMessage(
             "div"
         );
 
-
     div.className =
         "message " +
         type +
         " " +
         extraClass;
 
-
     div.textContent =
         String(text);
-
 
     messages.appendChild(
         div
     );
 
-
     messages.scrollTop =
         messages.scrollHeight;
 
-
     return div;
-
 }
 
 
@@ -643,13 +470,11 @@ Alia × IceGirl.
 const chatHistory = [
 
     {
-
         role:
             "system",
 
         content:
             SYSTEM_PROMPT
-
     }
 
 ];
@@ -670,11 +495,9 @@ function waitForPuter() {
             const start =
                 Date.now();
 
-
             const timer =
                 setInterval(
                     function() {
-
 
                         if (
 
@@ -692,11 +515,9 @@ function waitForPuter() {
                                 timer
                             );
 
-
                             resolve();
 
                             return;
-
                         }
 
 
@@ -712,7 +533,6 @@ function waitForPuter() {
                                 timer
                             );
 
-
                             reject(
                                 new Error(
                                     "Puter AI gagal dimuat."
@@ -720,7 +540,6 @@ function waitForPuter() {
                             );
 
                         }
-
 
                     },
                     100
@@ -741,9 +560,7 @@ function extractAIText(
 ) {
 
     if (!response) {
-
         return "";
-
     }
 
 
@@ -825,7 +642,6 @@ function extractAIText(
 
 
     return "";
-
 }
 
 
@@ -933,7 +749,6 @@ async function askAlia(
 
 
     return reply;
-
 }
 
 
@@ -1013,6 +828,7 @@ async function sendMessage() {
         );
 
     }
+
     catch (error) {
 
         console.error(
@@ -1031,6 +847,7 @@ async function sendMessage() {
             (
 
                 error &&
+
                 error.message
 
                     ? error.message
@@ -1049,6 +866,7 @@ async function sendMessage() {
         );
 
     }
+
     finally {
 
         send.disabled =
@@ -1066,18 +884,13 @@ async function sendMessage() {
 ===================================================== */
 
 send.addEventListener(
-
     "click",
-
     sendMessage
-
 );
 
 
 input.addEventListener(
-
     "keydown",
-
     function(event) {
 
         if (
@@ -1087,13 +900,11 @@ input.addEventListener(
 
             event.preventDefault();
 
-
             sendMessage();
 
         }
 
     }
-
 );
 
 
@@ -1104,7 +915,6 @@ input.addEventListener(
 async function loadLive2D() {
 
     try {
-
 
         setStatus(
             "🎭 Menyiapkan Live2D..."
@@ -1276,20 +1086,99 @@ async function loadLive2D() {
 
         /* -------------------------------------------------
            MODEL RESIZE
+           
+           FIX:
+           - Tidak memakai model.height sebagai basis scale.
+           - Menggunakan tinggi asli model yang tetap.
+           - Mengabaikan resize akibat keyboard Android.
         ------------------------------------------------- */
 
-        function resizeModel() {
+        const originalModelHeight =
+            model.internalModel.height;
 
-            const screenWidth =
+
+        let baseScreenWidth =
+            window.innerWidth;
+
+        let baseScreenHeight =
+            window.innerHeight;
+
+
+        function resizeModel(
+            force = false
+        ) {
+
+            const currentWidth =
                 window.innerWidth;
 
-
-            const screenHeight =
+            const currentHeight =
                 window.innerHeight;
 
 
             /*
-             * Tinggi model relatif terhadap layar.
+             * Android dapat mengubah innerHeight
+             * ketika keyboard virtual muncul.
+             */
+
+            const heightDifference =
+                baseScreenHeight -
+                currentHeight;
+
+
+            const keyboardOpen =
+                heightDifference > 120;
+
+
+            /*
+             * Kalau keyboard terbuka,
+             * jangan resize model.
+             */
+
+            if (
+                keyboardOpen &&
+                !force
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+             * Perubahan ukuran layar normal.
+             */
+
+            if (
+                currentWidth !==
+                    baseScreenWidth ||
+
+                (
+                    !keyboardOpen &&
+
+                    currentHeight !==
+                    baseScreenHeight
+
+                )
+            ) {
+
+                baseScreenWidth =
+                    currentWidth;
+
+                baseScreenHeight =
+                    currentHeight;
+
+            }
+
+
+            const screenWidth =
+                baseScreenWidth;
+
+            const screenHeight =
+                baseScreenHeight;
+
+
+            /*
+             * Tinggi target model.
              */
 
             const targetHeight =
@@ -1305,28 +1194,19 @@ async function loadLive2D() {
                 );
 
 
-            const modelHeight =
-                model.height ||
-                model.internalModel.height;
+            /*
+             * PENTING:
+             *
+             * Gunakan tinggi ASLI model.
+             *
+             * Jangan gunakan model.height,
+             * karena model.height berubah
+             * setelah scale diterapkan.
+             */
 
-
-            if (
-                !modelHeight ||
-                modelHeight <= 0
-            ) {
-
-                console.warn(
-                    "Ukuran model belum tersedia."
-                );
-
-                return;
-
-            }
-
-
-   const scale =
+            const scale =
                 targetHeight /
-                modelHeight;
+                originalModelHeight;
 
 
             model.scale.set(
@@ -1335,7 +1215,7 @@ async function loadLive2D() {
 
 
             /*
-             * Posisi tengah horizontal.
+             * Posisi horizontal.
              */
 
             model.x =
@@ -1344,7 +1224,7 @@ async function loadLive2D() {
 
 
             /*
-             * Sedikit turun dari bagian atas.
+             * Posisi vertikal.
              */
 
             model.y =
@@ -1361,7 +1241,7 @@ async function loadLive2D() {
 
 
             /*
-             * Titik anchor.
+             * Anchor.
              */
 
             if (
@@ -1369,8 +1249,8 @@ async function loadLive2D() {
             ) {
 
                 model.anchor.set(
-                    0.5,
-                    0
+                    0.5, 
+                     0
                 );
 
             }
@@ -1378,15 +1258,51 @@ async function loadLive2D() {
         }
 
 
-        resizeModel();
+        /*
+         * Initial sizing.
+         */
 
+        resizeModel(
+            true
+        );
+
+
+        /*
+         * Android keyboard biasanya
+         * memicu window resize.
+         *
+         * Kalau tinggi berkurang >120px,
+         * anggap keyboard sedang terbuka
+         * dan jangan resize Live2D.
+         */
 
         window.addEventListener(
-
             "resize",
+            function() {
 
-            resizeModel
+                const currentHeight =
+                    window.innerHeight;
 
+
+                const heightDifference =
+                    baseScreenHeight -
+                    currentHeight;
+
+
+                if (
+                    heightDifference > 120
+                ) {
+
+                    return;
+
+                }
+
+
+                resizeModel(
+                    true
+                );
+
+            }
         );
 
 
@@ -1405,6 +1321,7 @@ async function loadLive2D() {
 
 
     }
+
     catch (error) {
 
         console.error(
@@ -1417,11 +1334,6 @@ async function loadLive2D() {
             "⚠️ Live2D gagal dimuat"
         );
 
-
-        /*
-         * Tampilkan error supaya gampang
-         * diketahui dari browser console.
-         */
 
         console.error(
             "Pesan error:",
@@ -1441,9 +1353,7 @@ async function loadLive2D() {
 ===================================================== */
 
 window.addEventListener(
-
     "load",
-
     function() {
 
         loadLive2D();
@@ -1451,9 +1361,9 @@ window.addEventListener(
         input.focus();
 
     }
-
 );
 
 </script>
+
 </body>
 </html>
