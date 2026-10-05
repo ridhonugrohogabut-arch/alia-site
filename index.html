@@ -50,21 +50,16 @@ body {
 
 #live2dCanvas {
     position: absolute;
-
     inset: 0;
-
     width: 100%;
     height: 100%;
-
     z-index: 1;
 }
 
 #header {
     position: absolute;
-
     top: 16px;
     left: 16px;
-
     z-index: 20;
 
     padding: 9px 14px;
@@ -82,7 +77,6 @@ body {
         blur(10px);
 
     font-size: 14px;
-
     user-select: none;
 }
 
@@ -92,7 +86,6 @@ body {
 
 #status {
     position: absolute;
-
     top: 58px;
     left: 16px;
 
@@ -124,7 +117,6 @@ body {
         min(38vh, 360px);
 
     display: flex;
-
     flex-direction: column;
 
     background:
@@ -154,7 +146,6 @@ body {
     padding: 14px;
 
     display: flex;
-
     flex-direction: column;
 
     gap: 9px;
@@ -222,7 +213,6 @@ body {
 
 .message.typing {
     opacity: .65;
-
     font-style: italic;
 }
 
@@ -246,7 +236,6 @@ body {
     min-width: 0;
 
     border: 0;
-
     outline: none;
 
     padding:
@@ -302,13 +291,11 @@ body {
 @media (max-width: 600px) {
 
     #header {
-
         top: 10px;
         left: 10px;
     }
 
     #status {
-
         top: 52px;
         left: 10px;
     }
@@ -444,6 +431,10 @@ const TTS_WORKER_URL =
 let currentAudio = null;
 
 
+/* =====================================================
+   SPEAK ALIA
+===================================================== */
+
 async function speakAlia(text) {
 
     try {
@@ -488,6 +479,14 @@ async function speakAlia(text) {
 
         const audioBlob =
             await response.blob();
+
+
+        console.log(
+            "🎵 Audio blob:",
+            audioBlob.size,
+            "bytes",
+            audioBlob.type
+        );
 
 
         const audioURL =
@@ -557,7 +556,6 @@ async function speakAlia(text) {
         console.log(
             "🔊 Alia sedang berbicara."
         );
-
 
     }
     catch (error) {
@@ -751,9 +749,7 @@ function extractAIText(
 ) {
 
     if (!response) {
-
         return "";
-
     }
 
 
@@ -1003,13 +999,7 @@ async function sendMessage() {
         );
 
 
-        /*
-         * ================================================
-         * TTS
-         * ================================================
-         */
-
-        speakAlia(
+        await speakAlia(
             reply
         );
 
@@ -1305,8 +1295,7 @@ async function loadLive2D() {
 
             model.anchor.set(
                 0.5,
-                0
-            );
+      );
 
         }
 
@@ -1315,4 +1304,50 @@ async function loadLive2D() {
 
 
         window.addEventListener(
-  
+            "resize",
+            resizeModel
+        );
+
+
+        /* -------------------------------------------------
+           READY
+        ------------------------------------------------- */
+
+        setStatus(
+            "❄️ IceGirl siap • 🧠 Alia siap"
+        );
+
+
+        console.log(
+            "✅ Live2D berhasil dimuat."
+        );
+
+
+    }
+    catch (error) {
+
+        console.error(
+            "❌ LIVE2D ERROR:",
+            error
+        );
+
+
+        setStatus(
+            "⚠️ IceGirl gagal dimuat"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadLive2D();
+
+</script>
+
+</body>
+</html>
